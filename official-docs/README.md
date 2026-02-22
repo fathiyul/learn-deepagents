@@ -17,7 +17,7 @@ I initially created `01_first_agent.py` for the first example, taken from offici
 - [v] Subagents: use `subagents` in `create_deep_agent()`
     - use either `SubAgent` (a dict) or `CompiledSubAgent` (an actual agent) instead
     - in the [Using CompiledSubAgent](https://docs.langchain.com/oss/python/deepagents/subagents#using-compiledsubagent) code, it uses `create_agent()` with a param `prompt`, while `langchain.agents.create_agent` don't have this param. Should be `system_prompt`. This docs is testing my patience.
-- [ ] Backends: use `backend` in `create_deep_agent()`
+- [v] Backends: use `backend` in `create_deep_agent()`
     - the implementation code dont give good example of use case prompt and tools
 - [ ] Sandboxes: use Daytona or Deno, put into `backend` in `create_deep_agent()`. Gonna try
 - [ ] Human-in-the-loop: use `interrupt_on` and `checkpointer` in `create_deep_agent()`. Gonna try
@@ -25,3 +25,16 @@ I initially created `01_first_agent.py` for the first example, taken from offici
 - [ ] Memory: AGENT.md into `create_deep_agent()`
 - [v] Structured ouput: `response_format` in `create_deep_agent()`
 - [ ] MCP?
+
+## Backend
+
+Special section because this is I think the main feature of deep agents
+
+### StateBackend (ephemeral)
+already there?
+
+### FilesystemBackend (local disk)
+grants agents direct filesystem read/write access. scary
+
+### LocalShellBackend
+the local shell might not have the runtime needed or packages installed. i think i'll use sandboxes instead

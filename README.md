@@ -1,5 +1,7 @@
 # LangChain Deep Agents
 
+Agar menjadi referensi code penggunaan deepagents yang lebih reliable dibandingkan dokumentasi resminya.
+
 Core capabilities of Deep Agents
 - Planning and task decomposition: include a built-in [`write_todos`](https://docs.langchain.com/oss/python/langchain/middleware/built-in#to-do-list)
 - Context management: [file system tools](https://docs.langchain.com/oss/python/deepagents/harness#file-system-access) (`ls`, `read_file`, `write_file`, `edit_file`)
