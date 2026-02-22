@@ -19,7 +19,7 @@ I initially created `01_first_agent.py` for the first example, taken from offici
     - in the [Using CompiledSubAgent](https://docs.langchain.com/oss/python/deepagents/subagents#using-compiledsubagent) code, it uses `create_agent()` with a param `prompt`, while `langchain.agents.create_agent` don't have this param. Should be `system_prompt`. This docs is testing my patience.
 - [v] Backends: use `backend` in `create_deep_agent()`
     - the implementation code dont give good example of use case prompt and tools
-- [ ] Sandboxes: use Daytona or Deno, put into `backend` in `create_deep_agent()`. Gonna try
+- [v] Sandboxes: use Daytona or Deno, put into `backend` in `create_deep_agent()`. Gonna try
 - [ ] Human-in-the-loop: use `interrupt_on` and `checkpointer` in `create_deep_agent()`. Gonna try
 - [ ] Skills: SKILL.md into `create_deep_agent()`
 - [ ] Memory: AGENT.md into `create_deep_agent()`
@@ -38,3 +38,28 @@ grants agents direct filesystem read/write access. scary
 
 ### LocalShellBackend
 the local shell might not have the runtime needed or packages installed. i think i'll use sandboxes instead
+
+### Daytona
+**Cloud-Only Filesystem**
+
+When the agent says it "saved a file," it is saving it to a remote Linux container, not your local machine.
+
+State: The files only exist as long as the sandbox is running.
+
+Retrieval: To get files onto your local machine, you must explicitly call sandbox.download_file(remote_path, local_path) before the sandbox stops.
+
+**The sandbox.stop() Timeout**
+
+You may occasionally see a ReadTimeoutError during the finally block.
+
+What it means: The agent finished its work, but the Daytona API took longer than 60 seconds to confirm the sandbox has shut down.
+
+Status: This is a non-fatal network timeout. The sandbox will still auto-terminate on the server side based on its TTL (Time To Live) settings.
+
+Fix: We have wrapped the cleanup in a secondary try/except with an increased timeout of 120 seconds to prevent these infrastructure jitters from crashing the local script.
+
+**Execution Context**
+
+Root Directory: By default, the agent may use /tmp for scratch scripts. If you need it to work in the workspace root, specify ./filename in the prompt.
+
+Persistence: Every time you run the script, a fresh sandbox is created. Previous files are not kept unless you connect to an existing sandbox_id.
